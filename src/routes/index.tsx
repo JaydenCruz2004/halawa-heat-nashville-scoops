@@ -328,8 +328,7 @@ function Visit() {
 
 const SOCIALS = [
   { name: "Instagram", href: "https://www.instagram.com/halawa_heat/", Icon: Instagram },
-  { name: "Facebook", href: "https://www.facebook.com/", Icon: Facebook },
-  { name: "TikTok", href: "https://www.tiktok.com/@halawa_heat", Icon: Music2 },
+  { name: "TikTok", href: "https://www.tiktok.com/@halawa.heat", Icon: Music2 },
 ];
 
 function SocialIcons({ className = "" }: { className?: string }) {
