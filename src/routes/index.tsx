@@ -325,6 +325,7 @@ function Visit() {
             src="https://www.google.com/maps?q=360+Wallace+Rd+Nashville+TN+37211&output=embed"
             className="w-full h-full grayscale-[20%]"
             loading="lazy"
+            tabIndex={-1}
           />
         </div>
       </div>
