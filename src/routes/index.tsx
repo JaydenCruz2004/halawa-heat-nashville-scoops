@@ -3,7 +3,7 @@ import { Instagram, Facebook, Music2 } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
 import scoopImg from "@/assets/scoop.jpg";
 import chaiImg from "@/assets/chai.jpg";
-import logo from "@/assets/hh-logo.png.asset.json";
+import logo from "@/assets/hh-logo.png.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -84,7 +84,13 @@ function Nav() {
 
 function Logo({ className = "h-12 w-12" }: { className?: string }) {
   return (
-    <img src={logo.url} alt="Halawa & Heat" width={96} height={96} className={`${className} object-contain`} />
+    <img
+      src={logo}
+      alt="Halawa & Heat"
+      width={96}
+      height={96}
+      className={`${className} object-contain`}
+    />
   );
 }
 
