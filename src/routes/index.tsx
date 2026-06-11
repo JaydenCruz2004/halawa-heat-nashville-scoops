@@ -3,7 +3,7 @@ import { Instagram, Facebook, Music2 } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
 import scoopImg from "@/assets/scoop.jpg";
 import chaiImg from "@/assets/chai.jpg";
-import logo from "@/assets/hh-logo.png.";
+import logo from "@/assets/hh-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
