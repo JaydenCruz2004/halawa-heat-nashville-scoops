@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Instagram, Facebook, Music2 } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
+import hero2Img from "@/assets/hero2.jpg";
+
 import scoopImg from "@/assets/scoop.jpeg";
 import chaiImg from "@/assets/chai.jpg";
 import logo from "@/assets/hh-logo.png";
@@ -29,6 +31,11 @@ export const Route = createFileRoute("/")({
   }),
   component: Home,
 });
+
+const heroImages = [
+  { src: heroImg, alt: "Pistachio knafeh ice cream cone with steaming karak chai" },
+  { src: hero2Img, alt: "Halawa & Heat shop counter in Nashville" },
+];
 
 const flavors = [
   { name: "Knafeh", note: "Toasted kataifi, sweet cheese" },
@@ -97,6 +104,15 @@ function Logo({ className = "h-12 w-12" }: { className?: string }) {
 }
 
 function Hero() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % 2);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section id="top" className="relative overflow-hidden">
       <div className="container-x grid lg:grid-cols-2 gap-10 lg:gap-16 pt-12 pb-20 lg:py-24 items-center">
@@ -126,13 +142,26 @@ function Hero() {
 
         <div className="relative">
           <div className="absolute -inset-4 bg-gold/20 rounded-[2rem] rotate-2" aria-hidden />
-          <img
-            src={heroImg}
-            alt="Pistachio knafeh ice cream cone with steaming karak chai"
-            width={1536}
-            height={1536}
-            className="relative rounded-[1.75rem] shadow-2xl object-cover aspect-square w-full"
-          />
+          <div className="relative rounded-[1.75rem] shadow-2xl overflow-hidden aspect-square w-full">
+            <img
+              src={heroImg}
+              alt="Pistachio knafeh ice cream cone with steaming karak chai"
+              width={1536}
+              height={1536}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+                current === 0 ? "opacity-100" : "opacity-0"
+              }`}
+            />
+            <img
+              src={hero2Img}
+              alt="Halawa & Heat shop counter in Nashville"
+              width={1536}
+              height={1536}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+                current === 1 ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
           <div className="absolute -bottom-6 -left-6 bg-cream border border-border rounded-2xl px-5 py-4 shadow-lg hidden sm:block">
             <p className="font-display text-2xl text-navy leading-none">See you soon!</p>
             <p className="text-xs text-navy/60 mt-1">360 Wallace Rd · Nashville, TN</p>
