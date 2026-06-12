@@ -4,6 +4,8 @@ import heroImg from "@/assets/hero.jpg";
 import scoopImg from "@/assets/scoop.jpg";
 import chaiImg from "@/assets/chai.jpg";
 import logo from "@/assets/hh-logo.png";
+import { useEffect, useState } from "react";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -357,8 +359,34 @@ function SocialIcons({ className = "" }: { className?: string }) {
   );
 }
 
+interface BeholdPost {
+  id: string;
+  mediaUrl: string;
+  permalink: string;
+  caption?: string;
+  mediaType: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
+  thumbnailUrl?: string; // for videos
+}
+
+const BEHOLD_FEED_ID = "z67nUKYaKPOGt0h30bqo";
+
 function InstagramFeed() {
-  const tiles = [scoopImg, chaiImg, heroImg, scoopImg, chaiImg, heroImg];
+  const [posts, setPosts] = useState<BeholdPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`https://feeds.behold.so/${BEHOLD_FEED_ID}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data.slice(0, 6)); // show 6 posts
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const imgSrc = (post: BeholdPost) =>
+    post.mediaType === "VIDEO" ? post.thumbnailUrl! : post.mediaUrl;
+  
   return (
     <section id="instagram" className="container-x py-24">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -369,7 +397,7 @@ function InstagramFeed() {
             Fresh scoops, steaming karak, and behind-the-counter moments — straight from our Nashville shop.
           </p>
         </div>
-        <a
+        
           href="https://www.instagram.com/halawa_heat/"
           target="_blank"
           rel="noopener noreferrer"
@@ -378,26 +406,37 @@ function InstagramFeed() {
           <Instagram size={18} /> Follow on Instagram
         </a>
       </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-        {tiles.map((src, i) => (
-          <a
-            key={i}
-            href="https://www.instagram.com/halawa_heat/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative aspect-square overflow-hidden rounded-2xl bg-cream"
-          >
-            <img
-              src={src}
-              alt={`Halawa & Heat Instagram post ${i + 1}`}
-              loading="lazy"
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/40 transition flex items-center justify-center">
-              <Instagram className="text-cream opacity-0 group-hover:opacity-100 transition" size={28} />
-            </div>
-          </a>
-        ))}
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-square rounded-2xl bg-cream animate-pulse"
+              />
+            ))
+          : posts.map((post) => (
+              
+                key={post.id}
+                href={post.permalink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative aspect-square overflow-hidden rounded-2xl bg-cream"
+              >
+                <img
+                  src={imgSrc(post)}
+                  alt={post.caption?.slice(0, 80) ?? "Halawa & Heat on Instagram"}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/40 transition flex items-center justify-center">
+                  <Instagram
+                    className="text-cream opacity-0 group-hover:opacity-100 transition"
+                    size={28}
+                  />
+                </div>
+              </a>
+            ))}
       </div>
     </section>
   );
