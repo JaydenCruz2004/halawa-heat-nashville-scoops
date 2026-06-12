@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Instagram, Facebook, Music2 } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
-import scoopImg from "@/assets/scoop.jpg";
+import scoopImg from "@/assets/scoop.jpeg";
 import chaiImg from "@/assets/chai.jpg";
 import logo from "@/assets/hh-logo.png";
 import { useEffect, useState } from "react";
@@ -134,8 +134,8 @@ function Hero() {
             className="relative rounded-[1.75rem] shadow-2xl object-cover aspect-square w-full"
           />
           <div className="absolute -bottom-6 -left-6 bg-cream border border-border rounded-2xl px-5 py-4 shadow-lg hidden sm:block">
-            <p className="font-display text-2xl text-navy leading-none">Knafeh</p>
-            <p className="text-xs text-navy/60 mt-1">house favorite · est. Nashville</p>
+            <p className="font-display text-2xl text-navy leading-none">See you soon!</p>
+            <p className="text-xs text-navy/60 mt-1">360 Wallace Rd · Nashville, TN</p>
           </div>
         </div>
       </div>
@@ -208,8 +208,22 @@ function Flavors() {
           ))}
         </div>
 
-        <div className="mt-10 grid md:grid-cols-2 gap-6">
-          <img src={scoopImg} alt="Fresh scoop of strawberry ice cream" loading="lazy" width={1024} height={1280} className="rounded-2xl object-cover w-full h-64 md:h-80" />
+        <div className="mt-16 grid md:grid-cols-2 gap-6 items-center">
+          <div className="relative pb-8">
+            <div className="absolute -inset-4 bg-gold/20 rounded-[2rem] rotate-2" aria-hidden />
+            <img
+              src={scoopImg}
+              alt="Fresh scoop of strawberry ice cream"
+              loading="lazy"
+              width={1024}
+              height={1280}
+              className="relative rounded-[1.75rem] shadow-2xl object-cover w-full h-64 md:h-80"
+            />
+            <div className="absolute -bottom-2 -left-2 bg-cream border border-border rounded-2xl px-5 py-4 shadow-lg hidden sm:block">
+              <p className="font-display text-2xl text-navy leading-none">Chocolate & Rose</p>
+              <p className="text-xs text-navy/60 mt-1">date on the bottom · Nashville</p>
+            </div>
+          </div>
           <div className="bg-gold/15 rounded-2xl p-8 flex flex-col justify-center">
             <p className="font-display text-3xl text-navy italic">"Made with heritage, shared with warmth, and served with love."</p>
             <p className="text-sm text-navy/60 mt-4">— from our family table to yours</p>
@@ -365,7 +379,10 @@ interface BeholdPost {
   permalink: string;
   caption?: string;
   mediaType: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
-  thumbnailUrl?: string; // for videos
+  thumbnailUrl?: string;
+  sizes?: {
+    medium?: { mediaUrl: string };
+  };
 }
 
 const BEHOLD_FEED_ID = "z67nUKYaKPOGt0h30bqo";
@@ -378,15 +395,15 @@ function InstagramFeed() {
     fetch(`https://feeds.behold.so/${BEHOLD_FEED_ID}`)
       .then((res) => res.json())
       .then((data) => {
-        setPosts(data.slice(0, 6)); // show 6 posts
+        setPosts(data.posts.slice(0, 6)); // show 6 posts
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
   const imgSrc = (post: BeholdPost) =>
-    post.mediaType === "VIDEO" ? post.thumbnailUrl! : post.mediaUrl;
-  
+  post.sizes?.medium?.mediaUrl ?? post.thumbnailUrl ?? post.mediaUrl;
+
   return (
     <section id="instagram" className="container-x py-24">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
