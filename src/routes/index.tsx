@@ -397,7 +397,7 @@ function InstagramFeed() {
             Fresh scoops, steaming karak, and behind-the-counter moments — straight from our Nashville shop.
           </p>
         </div>
-        
+        <a
           href="https://www.instagram.com/halawa_heat/"
           target="_blank"
           rel="noopener noreferrer"
@@ -406,6 +406,7 @@ function InstagramFeed() {
           <Instagram size={18} /> Follow on Instagram
         </a>
       </div>
+      
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         {loading
@@ -416,7 +417,7 @@ function InstagramFeed() {
               />
             ))
           : posts.map((post) => (
-              
+              <a
                 key={post.id}
                 href={post.permalink}
                 target="_blank"
